@@ -66,7 +66,5 @@ def test_distance_pointline():
     point1 = np.array([0.9999999, 0.5])
     omega = np.array([0.0, 1.0])
     d, s = distance_pointline(point0, omega, point1)
-    print(d)
-    print(s)
     assert (d - 0.0) ** 2 < 1e-8
     assert (s - 0.5) ** 2 < 1e-8
