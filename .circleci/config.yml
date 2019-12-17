@@ -1,0 +1,17 @@
+
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: ubuntu:19.10
+    steps:
+      - run: apt-get update
+      - run: apt-get install -y git python3-pip 
+      - run: pip3 install -U pytest pytest-cov numpy scipy numba matplotlib
+      - checkout
+      # The tests
+      - run: cd tests/ && pytest --cov pleip
+      # submit to codecov
+      - run: apt-get install -y curl
+      - run: bash <(curl -s https://codecov.io/bash)
