@@ -42,14 +42,6 @@ def test_distance_periodic():
     assert np.isclose(dist01, dist10)
 
     with pytest.raises(ValueError):
-        point0 = np.ones(2)  # can't be one
-        point1 = np.zeros(2)
-        dist = distance_periodic(point0, point1)
-    with pytest.raises(ValueError):
-        point0 = np.ones(2)  # can't be one
-        point1 = np.zeros(2)
-        dist = distance_periodic(point1, point0)
-    with pytest.raises(ValueError):
         point0 = 0.5 * np.ones(2)
         point1 = np.zeros(2)
         dist = distance_periodic(point0, point1, 1.0, 0.0, 1.0, 0.0)
@@ -69,3 +61,12 @@ def test_distance_pointline():
     d, s = distance_pointline(point0, omega, point1)
     assert np.isclose(d, 0.0)
     assert np.isclose(s, 0.5)
+
+    point0 = np.array([0.0, 0.0])
+    point1 = np.array([0.9999999, 0.5])
+    omega = np.array([0.0, 1.0])
+    d, s = distance_pointline(point0, omega, point1)
+    print(d)
+    print(s)
+    assert (d - 0.0) ** 2 < 1e-8
+    assert (s - 0.5) ** 2 < 1e-8

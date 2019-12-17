@@ -1,4 +1,4 @@
-from numpy import inf, sqrt, zeros, dot
+from numpy import inf, sqrt, zeros, dot, ceil
 
 
 def distance_periodic(point0, point1, x0=0.0, x1=1.0, y0=0.0, y1=1.0):
@@ -21,18 +21,23 @@ def distance_periodic(point0, point1, x0=0.0, x1=1.0, y0=0.0, y1=1.0):
 
     Raises:
         ValueError: If x0>=x1 or y0>=y1.
-        ValueError: If point0 or point1 is not in the domain.
     """
 
     if x0 > x1 or y0 > y1:
         raise ValueError('We demand x0<x1 and y0<y1 but got x0={}, x1={}, y0={}, and y1={}'.format(x0, x1, y0, y1))
-    if not (x0 <= point0[0] < x1) or not (y0 <= point0[1] < y1):
-        raise ValueError('point0=({},{}) is not inside [{},{}[ x [{},{}[.'.format(point0[0], point0[1], x0, x1, y0, y1))
-    if not (x0 <= point1[0] < x1) or not (y0 <= point1[1] < y1):
-        raise ValueError('point1=({},{}) is not inside [{},{}[ x [{},{}[.'.format(point1[0], point1[1], x0, x1, y0, y1))
+
+    width, height = x1 - x0, y1 - y0
+    # If the points are not inside the domain we move them into the domain.
+    if point0[0] < x0: point0[0] += ceil((x0 - point0[0]) / width) * width
+    if point0[0] > x1: point0[0] -= ceil((point0[0] - x1) / width) * width
+    if point0[1] < y0: point0[1] += ceil((y0 - point0[1]) / height) * height
+    if point0[1] > y1: point0[1] -= ceil((point0[1] - x1) / height) * height
+    if point1[0] < x0: point1[0] += ceil((x0 - point1[0]) / width) * width
+    if point1[0] > x1: point1[0] -= ceil((point1[0] - x1) / width) * width
+    if point1[1] < y0: point1[1] += ceil((y0 - point1[1]) / height) * height
+    if point1[1] > y1: point1[1] -= ceil((point1[1] - x1) / height) * height
 
     minimaldistance = inf  # Initialize with inf and then find the minimum over all periodic cases.
-    width, height = x1 - x0, y1 - y0
     for offsetx in [-width, 0.0, width]:
         for offsety in [-height, 0.0, height]:
             dx = (point0[0] - x0 + offsetx) - (point1[0] - x0)  # Difference in x-dimension.
@@ -75,5 +80,5 @@ def distance_pointline(linepoint, linedirection, point, norm=customnorm):
     speed = sqrt(linedirection[0] ** 2 + linedirection[1] ** 2)
     normalvector = linedirection / speed
     minmaldistance = norm((linepoint - point) - normalvector * (dot(linepoint - point, normalvector)))
-    s = sqrt((linepoint - point)[0] ** 2 + (linepoint - point)[1] ** 2 - minmaldistance ** 2)
+    s = sqrt(norm(linepoint - point)**2 - minmaldistance ** 2)
     return minmaldistance, s
