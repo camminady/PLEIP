@@ -1,4 +1,4 @@
-from numpy import inf, sqrt, zeros, dot, ceil
+from numpy import inf, sqrt, zeros, dot, ceil, isclose
 
 
 def distance_periodic(point0, point1, x0=0.0, x1=1.0, y0=0.0, y1=1.0):

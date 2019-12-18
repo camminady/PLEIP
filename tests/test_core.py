@@ -84,7 +84,6 @@ def test_distance_pointline():
     omega = np.array([0.5, 0.5])
     d1, s1 = distance_pointline(point0, omega, point1)
     d2, s2 = distance_pointline(point0, 2 * omega, point1)
-    print(d1, s1, d2, s2)
     assert np.isclose(d1, d2)
     assert np.isclose(s1, s2)  # since we ignore normalization
 
@@ -96,3 +95,4 @@ def test_norm():
     A = distance_periodic(point0, point1)
     B = customnorm(point0 - point1, distance_periodic)
     assert np.isclose(A, B)
+
