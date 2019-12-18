@@ -28,14 +28,11 @@ def distance_periodic(point0, point1, x0=0.0, x1=1.0, y0=0.0, y1=1.0):
 
     width, height = x1 - x0, y1 - y0
     # If the points are not inside the domain we move them into the domain.
-    if point0[0] < x0: point0[0] += ceil((x0 - point0[0]) / width) * width
-    if point0[0] > x1: point0[0] -= ceil((point0[0] - x1) / width) * width
-    if point0[1] < y0: point0[1] += ceil((y0 - point0[1]) / height) * height
-    if point0[1] > y1: point0[1] -= ceil((point0[1] - x1) / height) * height
-    if point1[0] < x0: point1[0] += ceil((x0 - point1[0]) / width) * width
-    if point1[0] > x1: point1[0] -= ceil((point1[0] - x1) / width) * width
-    if point1[1] < y0: point1[1] += ceil((y0 - point1[1]) / height) * height
-    if point1[1] > y1: point1[1] -= ceil((point1[1] - x1) / height) * height
+    for point in [point0, point1]:
+        if point[0] < x0: point[0] += ceil((x0 - point[0]) / width) * width
+        if point[0] > x1: point[0] -= ceil((point[0] - x1) / width) * width
+        if point[1] < y0: point[1] += ceil((y0 - point[1]) / height) * height
+        if point[1] > y1: point[1] -= ceil((point[1] - x1) / height) * height
 
     minimaldistance = inf  # Initialize with inf and then find the minimum over all periodic cases.
     for offsetx in [-width, 0.0, width]:
@@ -69,16 +66,18 @@ def distance_pointline(linepoint, linedirection, point, norm=customnorm):
 
     Args:
         linepoint: A point through which a line passes.
-        linedirection: The direction vector that defines the line together with linepoint.
+        linedirection: The direction vector that defines the line together with linepoint. Will taken normalized!
         point: We compute the distance to the line for exactly this point
-        distance: A distance function that takes two points and returns their distance.
+        norm: A norm used to compute lengths.
 
     Returns:
         minmaldistance: The minimal distance between a point and a line.
-        s: The value for which distance(linepoint+linedirection*s - point)=minimaldistance.
+        s: The value for which distance(linepoint+linedirection/normalization*s - point)=minimaldistance.
     """
+
     speed = sqrt(linedirection[0] ** 2 + linedirection[1] ** 2)
     normalvector = linedirection / speed
     minmaldistance = norm((linepoint - point) - normalvector * (dot(linepoint - point, normalvector)))
-    s = sqrt(norm(linepoint - point)**2 - minmaldistance ** 2)
+    s = sqrt(norm(linepoint - point) ** 2 - minmaldistance ** 2)
     return minmaldistance, s
+
