@@ -1,10 +1,10 @@
-# Ditched in favor for https://github.com/camminady/PLE.jl
+# Obsolete due to:https://github.com/camminady/PLE.jl
 
 
 
 
 
-# PLEIP
+## PLEIP
 Path length estimator in Python
 
 [![CircleCI](https://circleci.com/gh/camminady/PLEIP/tree/master.svg?style=svg)](https://circleci.com/gh/camminady/PLEIP/tree/master)
