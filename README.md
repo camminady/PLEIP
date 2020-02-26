@@ -1,3 +1,9 @@
+# Ditched in favor for https://github.com/camminady/PLE.jl
+
+
+
+
+
 # PLEIP
 Path length estimator in Python
 
@@ -6,4 +12,3 @@ Path length estimator in Python
 [![codecov](https://img.shields.io/codecov/c/github/camminady/PLEIP.svg)](https://codecov.io/gh/camminady/PLEIP)
 
 
-**Under active development.**
